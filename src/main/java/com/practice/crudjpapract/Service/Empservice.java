@@ -6,8 +6,10 @@ import com.practice.crudjpapract.Exception.ResponseNotFoundException;
 import com.practice.crudjpapract.Repo.detailrepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -57,5 +59,13 @@ public class Empservice {
         EmployeeInfoDTO changetodto = new EmployeeInfoDTO(changetoentity.getName(), changetoentity.getEmail());
         return changetodto;
     }
+    private EmployeeInfoDTO convertodto(Employeeinfo empinf){
 
+        return new EmployeeInfoDTO(empinf.getName(), empinf.getEmail());
+    }
+
+    public Page<EmployeeInfoDTO> getuser(Pageable pageable) {
+        Page<Employeeinfo> empinfo= repo.findAll(pageable);
+        return empinfo.map(this::convertodto);
+     }
 }

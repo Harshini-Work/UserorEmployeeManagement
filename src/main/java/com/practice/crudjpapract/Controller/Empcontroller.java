@@ -6,11 +6,15 @@ import com.practice.crudjpapract.Service.Empservice;
 import com.practice.crudjpapract.sucess.SucessResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -48,5 +52,9 @@ public class Empcontroller {
              EmployeeInfoDTO save = empservice.enter(empdto);
 
              return  ResponseEntity.status(HttpStatus.CREATED).body(new SucessResponse("Created Sucessfully",empdto));
+         }
+         @GetMapping
+         public Page<EmployeeInfoDTO> getuser(@PageableDefault (size =5,sort="name",direction = Sort.Direction.ASC) Pageable pageable){
+              return empservice.getuser(pageable);
          }
 }
